@@ -94,11 +94,4 @@ def env_config(request):
     selected_url = config_matrix.get(target_env, config_matrix["qa"])
     return {"base_url": selected_url, "environment": target_env}
 
-if os.environ.get("CI") == "true":
-    @pytest.fixture(scope="function", name="snapshot")
-    def dummy_snapshot():
-        """Bypasses third-party snapshot plugin directory initialization loops inside CI."""
-        class MockSnapshotEngine:
-            def assert_match(self, *args, **kwargs):
-                pass
-        return MockSnapshotEngine()
+
