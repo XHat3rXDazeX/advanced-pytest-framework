@@ -1,0 +1,17 @@
+[
+    {
+        "scenario": "Valid Standard User Login",
+        "username": "standard_user",
+        "expected_url_keyword": "inventory"
+    },
+    {
+        "scenario": "Invalid Account Login",
+        "username": "locked_out_user",
+        "expected_url_keyword": "saucedemo.com"
+    },
+    {
+        "scenario": "Problem User Account Verification",
+        "username": "problem_user",
+        "expected_url_keyword": "inventory"
+    }
+]
