@@ -42,5 +42,6 @@ class LoginPage:
         self.postal_code_input.fill(postal_code)
         self.continue_button.click()
         
-        # Complete Purchase
+        # Complete Purchase - Wait for visibility to handle WebKit layout engine rendering speeds
+        self.finish_button.wait_for(state="visible")
         self.finish_button.click()
