@@ -1,0 +1,5 @@
+2026-10-21 23:56:32,689 [INFO] Initializing background API Request Context... (test_api_schema.py:20)
+2026-10-21 23:56:32,692 [INFO] Sending outbound POST request to validation endpoint... (test_api_schema.py:25)
+2026-10-21 23:56:32,886 [INFO] API Response intercepted. Status Code: 200 (test_api_schema.py:32)
+2026-10-21 23:56:32,888 [INFO] Verifying payload data schema values and key types... (test_api_schema.py:40)
+2026-10-21 23:56:32,888 [INFO] API Schema compliance check successfully passed. (test_api_schema.py:45)

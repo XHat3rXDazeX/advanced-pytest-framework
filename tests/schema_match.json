@@ -1,0 +1,6 @@
+{
+    "user_id": 101,
+    "account_status": "active",
+    "auth_token": "bearer_token_verified",
+    "permissions": ["read", "write", "execute"]
+}
