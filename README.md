@@ -23,18 +23,18 @@ advanced-pytest-framework/
 └── pytest.ini          # Pytest engine framework configurations
 ```
 
-## 🛠️ Local Installation & Setup
+## 🛠 Local Installation & Setup
 
 1. Clone this repository to your machine.
-2. Install dependencies via the pre-compiled binary preference pipeline:
+2. Activate your virtual environment and install all framework dependencies cleanly:
    ```bash
-   py -m pip install --user pytest playwright pytest-playwright --prefer-binary
+   pip install -r requirements.txt
    ```
-3. Initialize the dedicated automated browser binaries:
+3. Initialize the dedicated cross-browser automated binaries:
    ```bash
-   py -m playwright install
+   playwright install
    ```
-4. Execute the entire integrated verification suite locally:
+4. Execute the entire integrated verification suite in parallel across the browser matrix:
    ```bash
-   py -m pytest
+   pytest
    ```

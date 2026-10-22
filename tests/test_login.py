@@ -17,3 +17,21 @@ def test_valid_user_can_login(page: Page):
     
     # 3. ASSERTION: Verify the login worked
     assert "inventory.html" in page.url
+
+def test_login_page_visual_snapshot(page, env_config, snapshot):
+    """
+    Captures a full-page visual layout snapshot of the authentication screen 
+    and validates it pixel-by-pixel against a golden baseline snapshot file.
+    """
+    # 1. Navigate to the application landing page using your environment config
+    page.goto(env_config["base_url"])
+    
+    # 2. Wait for the main page container to finish rendering completely
+    page.wait_for_selector(".login_wrapper", state="visible")
+    
+    # 3. Take a binary screenshot image of the current page layout
+    current_screenshot = page.screenshot(full_page=True)
+    
+    # 4. Assert that the captured screenshot exactly matches the saved baseline file
+    # This creates a folder named 'snapshots' inside your tests directory
+    snapshot.assert_match(current_screenshot, "login_page_baseline.png")
