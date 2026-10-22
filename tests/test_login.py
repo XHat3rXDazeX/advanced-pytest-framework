@@ -20,11 +20,6 @@ def test_valid_user_can_login(page: Page):
     # 3. ASSERTION: Verify the login worked
     assert "inventory.html" in page.url
 
-# Dynamically skip this test in GitHub Actions to avoid environment-specific fixture conflicts
-@pytest.mark.skipif(
-    os.environ.get("CI") == "true",
-    reason="Skipping visual snapshot testing in headless cloud CI environments."
-)
 def test_login_page_visual_snapshot(page, env_config, browser_name, snapshot):
     """
     Captures a full-page visual layout snapshot of the authentication screen 
