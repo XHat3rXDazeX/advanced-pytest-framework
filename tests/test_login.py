@@ -24,12 +24,7 @@ def test_login_page_visual_snapshot(page, env_config, browser_name, snapshot):
     """
     Captures a full-page visual layout snapshot of the authentication screen 
     and validates it pixel-by-pixel against an environment-isolated baseline file.
-    Skips execution in CI environments to prevent environment rendering disparities.
     """
-    # Check if running inside GitHub Actions (GitHub sets 'CI' to 'true' automatically)
-    if os.environ.get("CI") == "true":
-        pytest.skip("Skipping visual layout snapshot checks in headless CI cloud environments.")
-
     # 1. Navigate to the application landing page using your environment config
     page.goto(env_config["base_url"])
     
