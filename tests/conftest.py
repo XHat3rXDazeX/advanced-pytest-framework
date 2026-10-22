@@ -3,30 +3,37 @@ import logging
 import pytest
 from datetime import datetime
 
-# 1. Initialize a production-grade centralized logging subsystem
+# 1. Initialize a production-grade centralized logging subsystem (xdist-safe)
 @pytest.fixture(scope="session", autouse=True)
 def configure_logger():
     """
-    Initializes a central logging subsystem that captures execution metrics 
-    and pipes them simultaneously to the console and a historical automation.log file.
+    Initializes a central logging subsystem that isolates execution metrics per parallel 
+    worker to prevent multi-threaded file-locking race conditions.
     """
     log_dir = os.path.join(os.path.dirname(__file__), "logs")
     os.makedirs(log_dir, exist_ok=True)
     
-    logger = logging.getLogger("AutomationSuite")
+    # Detect if pytest-xdist is running and extract the worker ID (e.g., gw0, gw1)
+    worker_id = os.environ.get("PYTEST_XDIST_WORKER", "master")
+    
+    # Create an isolated logger name per worker
+    logger = logging.getLogger(f"AutomationSuite_{worker_id}")
     logger.setLevel(logging.INFO)
     
     if not logger.handlers:
-        # File Handler - Writes deep historical logs to local disk
-        log_file = os.path.join(log_dir, "automation.log")
-        file_handler = logging.FileHandler(log_file, mode="w")
+        # Create an isolated log file per worker (e.g., automation_gw0.log)
+        log_file_name = f"automation_{worker_id}.log" if worker_id != "master" else "automation.log"
+        log_file = os.path.join(log_dir, log_file_name)
+        
+        # Use mode="a" (append) to prevent workers from aggressively locking/wiping files
+        file_handler = logging.FileHandler(log_file, mode="a")
         file_formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s (%(filename)s:%(lineno)d)')
         file_handler.setFormatter(file_formatter)
         logger.addHandler(file_handler)
         
     return logger
 
-# 2. Hooks into Pytest execution to automatically capture failure screenshots
+# 2. Hooks into Pytest execution to automatically capture failure screenshots (xdist-safe)
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     """
@@ -43,16 +50,23 @@ def pytest_runtest_makereport(item, call):
             screenshot_dir = os.path.join(os.path.dirname(__file__), "screenshots")
             os.makedirs(screenshot_dir, exist_ok=True)
             
+            # Extract worker ID to make the file name completely unique across threads
+            worker_id = os.environ.get("PYTEST_XDIST_WORKER", "master")
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            screenshot_path = os.path.join(screenshot_dir, f"fail_{item.name}_{timestamp}.png")
+            
+            screenshot_name = f"fail_{worker_id}_{item.name}_{timestamp}.png"
+            screenshot_path = os.path.join(screenshot_dir, screenshot_name)
             
             page.screenshot(path=screenshot_path)
             
+            # Safely embed into report. xdist requires checking for the extra list initialization
             import pytest_html
-            if hasattr(report, "extra"):
-                relative_path = os.path.join("screenshots", f"fail_{item.name}_{timestamp}.png")
-                html_element = pytest_html.extras.image(relative_path)
-                report.extra.append(html_element)
+            if not hasattr(report, "extra"):
+                report.extra = []
+                
+            relative_path = os.path.join("screenshots", screenshot_name)
+            html_element = pytest_html.extras.image(relative_path)
+            report.extra.append(html_element)
 
 # 3. Register a custom command-line flag option for the framework
 def pytest_addoption(parser):
@@ -60,7 +74,7 @@ def pytest_addoption(parser):
         "--env", 
         action="store", 
         default="qa", 
-        help="Target environment environment matrix matrix selection: qa or prod"
+        help="Target environment matrix selection: qa or prod"
     )
 
 # 4. Inject the parsed CLI option into a reusable fixture setup
@@ -72,7 +86,6 @@ def env_config(request):
     """
     target_env = request.config.getoption("--env")
     
-    # Update both environments to include the missing www. prefix string
     config_matrix = {
         "qa": "https://www.saucedemo.com",
         "prod": "https://www.saucedemo.com"
