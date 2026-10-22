@@ -37,5 +37,7 @@ jobs:
       run: playwright install chromium
 
     - name: Execute Automated Enterprise Suite
-      run: python -m pytest -p no:snapshot
-
+      run: 
+        python -m pytest -p no:snapshot
+      env:
+        TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
