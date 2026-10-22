@@ -53,3 +53,30 @@ def pytest_runtest_makereport(item, call):
                 relative_path = os.path.join("screenshots", f"fail_{item.name}_{timestamp}.png")
                 html_element = pytest_html.extras.image(relative_path)
                 report.extra.append(html_element)
+
+# 3. Register a custom command-line flag option for the framework
+def pytest_addoption(parser):
+    parser.addoption(
+        "--env", 
+        action="store", 
+        default="qa", 
+        help="Target environment environment matrix matrix selection: qa or prod"
+    )
+
+# 4. Inject the parsed CLI option into a reusable fixture setup
+@pytest.fixture(scope="session")
+def env_config(request):
+    """
+    Dynamically maps configuration metadata contexts based on 
+    the runtime --env flag passed into the terminal configuration loop.
+    """
+    target_env = request.config.getoption("--env")
+    
+    # Update both environments to include the missing www. prefix string
+    config_matrix = {
+        "qa": "https://www.saucedemo.com",
+        "prod": "https://www.saucedemo.com"
+    }
+    
+    selected_url = config_matrix.get(target_env, config_matrix["qa"])
+    return {"base_url": selected_url, "environment": target_env}
