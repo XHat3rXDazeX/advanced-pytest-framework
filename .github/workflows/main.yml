@@ -25,13 +25,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
-    - name: Install Playwright System Dependencies
-      run: |
-        playwright install-deps
-    
     - name: Install Playwright Browser Binaries
       run: |
-        playwright install
+        python -m playwright install chromium firefox webkit
 
     - name: Initialize Playwright Test Browsers
       run: playwright install chromium
