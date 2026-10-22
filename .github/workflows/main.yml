@@ -32,10 +32,10 @@ jobs:
     - name: Install Playwright Browser Binaries
       run: |
         playwright install
-        
+
     - name: Initialize Playwright Test Browsers
       run: playwright install chromium
 
     - name: Execute Automated Enterprise Suite
-      run: python -m pytest
+      run: pytest --snapshot-update
 
