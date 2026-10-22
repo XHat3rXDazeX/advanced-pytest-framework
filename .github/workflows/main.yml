@@ -29,6 +29,10 @@ jobs:
       run: |
         python -m playwright install chromium firefox webkit
 
+    - name: Install Playwright OS Dependencies
+      run: |
+        python -m playwright install-deps
+
     - name: Initialize Playwright Test Browsers
       run: playwright install chromium
 
