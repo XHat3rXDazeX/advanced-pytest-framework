@@ -57,8 +57,10 @@ story.append(Paragraph("<i>Enterprise Hybrid UI & API Test Automation Platform F
 story.append(Spacer(1, 4))
 story.append(Paragraph("&bull; <b>Engineered Modular Page Object Models (POM):</b> Completely decoupled dynamic web DOM element paths from core testing assertions using object-oriented Python classes, slashing scripting maintenance overhead by 50% across functional suites.", styles['BulletText']))
 story.append(Paragraph("&bull; <b>Implemented Isolated Browser-Level API Mocking:</b> Architected offline test routing wrappers via browser tab network context intercepts; defeated environment network dependencies and cloud server request latency to achieve fast, isolated execution loops.", styles['BulletText']))
-story.append(Paragraph("&bull; <b>Orchestrated GitHub Actions Cloud Pipelines:</b> Formulated automated branch-tracking workflows (`main.yml`) that auto-provision clean Ubuntu virtual nodes, install package environments, pull web browsers, and push live build status badges.", styles['BulletText']))
-story.append(Paragraph("&bull; <b>Constructed Data-Driven Configurations:</b> Structured a secure, override baseline framework (`pytest.ini` / `settings.py`) to fully filter background execution noise and safely handle credentials without hardcoding source secrets.", styles['BulletText']))
+story.append(Paragraph("&bull; <b>Orchestrated Concurrent Multi-Worker Execution Pipelines:</b> Integrated <code>pytest-xdist</code> to scale execution speed across parallel workers; designed thread-isolated logging engines using the <code>PYTEST_XDIST_WORKER</code> metric to eliminate multi-process file-locking race conditions.", styles['BulletText']))
+story.append(Paragraph("&bull; <b>Resolved Cross-Browser Synchronicity Constraints:</b> Configured a native multi-browser layout validation matrix targeting Chromium, Firefox, and WebKit; engineered explicit actionability wait state handling (<code>wait_for(state='visible')</code>) to defeat WebKit-specific asynchronous layout rendering delays.", styles['BulletText']))
+story.append(Paragraph("&bull; <b>Engineered Visual Regression & Real-Time Alerting Telemetry:</b> Developed an independent platform-segregated byte-comparison snapshot engine ensuring headless CI rendering consistency; configured automated <code>pytest_sessionfinish</code> hooks to extract test metrics and dispatch alerts to webhooks.", styles['BulletText']))
+story.append(Paragraph("&bull; <b>Constructed Data-Driven Report Configurations:</b> Structured a secure framework utilizing externalized parameter parameters (<code>test_data.json</code>) alongside custom HTML reporting engines containing automated runtime screenshot capture hooks on test failure events.", styles['BulletText']))
 
 # 3. Professional Experience Section
 add_divider("PROFESSIONAL EXPERIENCE")
@@ -85,4 +87,4 @@ story.append(Spacer(1, 2))
 story.append(Paragraph("&bull; Completed intensive academic fundamentals in core Object-Oriented Programming (OOP) architectures, function layouts, condition execution loops, script logic syntax, and programmatic problem-solving.", styles['BulletText']))
 
 doc.build(story)
-print("SUCCESS: Harsukh_Dhaliwal_QA_Automation_Resume.pdf has been generated successfully!")
+print("SUCCESS: Harsukh_Dhaliwal_QA_Automation_Resume.pdf has been generated successfully with Option G-J milestones!")
